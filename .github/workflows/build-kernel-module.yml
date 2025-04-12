@@ -14,7 +14,7 @@ jobs:
           sudo apt update
           sudo apt upgrade -y
           sudo apt install -y mmdebstrap qemu-user-static systemd-container debian-archive-keyring
-          sudo mmdebstrap --arch=arm64 --include sudo,curl,build-essential,devscripts,dkms,git bookworm /var/lib/machines/armbian-meson64
+          sudo mmdebstrap --arch=arm64 --include sudo,curl,build-essential,devscripts,dkms,git,bc bookworm /var/lib/machines/armbian-meson64
           echo "Container successfully created"
       - name: Preparing repository
         uses: actions/checkout@v4
