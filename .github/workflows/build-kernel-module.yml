@@ -1,0 +1,36 @@
+name: Building 8189fs kernel module for linux-image-current-meson64
+run-name: ${{ github.actor }} is building 8189fs kernel module for linux-image-current-meson64
+on: push
+permissions:
+  contents: write
+
+jobs:
+  build-kernel-module:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Preparing chroot
+        id: preparing-chroot
+        run: |
+          sudo apt update
+          sudo apt upgrade -y
+          sudo apt install -y mmdebstrap qemu-user-static systemd-container debian-archive-keyring
+          sudo mmdebstrap --arch=arm64 --include sudo,curl,build-essential,devscripts,dkms,git bookworm /var/lib/machines/armbian-meson64
+          echo "Container successfully created"
+      - name: Preparing repository
+        uses: actions/checkout@v4
+      - name: Building 8189fs kernel module
+        id: building_8189fs_kernel_module
+        run: |
+          sudo systemd-nspawn --bind ${{ github.workspace }}:/tmp/workspace --bind-ro /etc/resolv.conf --hostname localhost --machine armbian-meson64 -- sh /tmp/workspace/prepare-build-chroot.sh
+          sudo systemd-nspawn --bind ${{ github.workspace }}:/tmp/workspace --bind-ro /etc/resolv.conf --hostname localhost --machine armbian-meson64 -- sh /tmp/workspace/build.sh
+      - name: Uploading artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: ${{ github.workspace }}
+      - name: Creating release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            ${{ github.workspace }}/*tar.gz
