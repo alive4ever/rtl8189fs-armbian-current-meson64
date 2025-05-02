@@ -1,6 +1,10 @@
 name: Building 8189fs kernel module for linux-image-current-meson64
 run-name: ${{ github.actor }} is building 8189fs kernel module for linux-image-current-meson64
-on: push
+on:
+  push:
+    tags:
+      - '*'
+
 permissions:
   contents: write
 
