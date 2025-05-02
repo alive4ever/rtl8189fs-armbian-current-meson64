@@ -25,7 +25,7 @@ jobs:
         id: building_8189fs_kernel_module
         run: |
           sudo systemd-nspawn --bind ${{ github.workspace }}:/tmp/workspace --bind-ro /etc/resolv.conf --hostname localhost --machine armbian-meson64 -- sh /tmp/workspace/prepare-build-chroot.sh
-          sudo systemd-nspawn --bind ${{ github.workspace }}:/tmp/workspace --bind-ro /etc/resolv.conf --hostname localhost --machine armbian-meson64 -- sh /tmp/workspace/build.sh
+          sudo systemd-nspawn --bind ${{ github.workspace }}:/tmp/workspace --bind-ro /etc/resolv.conf --hostname localhost --machine armbian-meson64 --user builder -- sh /tmp/workspace/build.sh
       - name: Uploading artifacts
         uses: actions/upload-artifact@v4
         with:
