@@ -15,7 +15,9 @@ Get the resulting dkms tarball from the release page and load it.
 ```sh
 MODVER='0.0.1'
 KVER="6.12.22-current-meson64-arm64"
-dkms ldtarball rtl8189fs-"$MODVER"-kernel"$KVER".dkms.tar.gz
+dkms ldtarball rtl8189fs-"$MODVER"-kernel"$KVER".dkms.tar.gz --force
+dkms status
+dkms install -m rtl8189fs/"$MODVER" -a arm64 --force
 modprobe -f 8189fs
 ```
 
