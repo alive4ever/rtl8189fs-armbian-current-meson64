@@ -11,7 +11,7 @@ MODVER="0.0.1"
 git clone --branch=rtl8189fs https://github.com/jwrdegoede/rtl8189ES_linux.git rtl8189fs-"$MODVER"
 KVER="$(ls /lib/modules | head -n 1)"
 KSRC="$(find /usr/src/ -maxdepth 1 -type d -name 'linux-headers-*')"
-dkms build -m rtl8189fs/"$MODVER"--dkmstree "$PWD" --sourcetree "$PWD" --kernelsourcedir "$KSRC" -a arm64
+dkms build -m rtl8189fs/"$MODVER" --dkmstree "$PWD" --sourcetree "$PWD" --kernelsourcedir "$KSRC" -a arm64
 dkms mktarball -m rtl8189fs/"$MODVER"--dkmstree "$PWD" --sourcetree "$PWD" --kernelsourcedir "$KSRC" -a arm64
 OUTFILE="$(find rtl8189fs/$MODVER -name '*.tar.gz')"
 echo "dkms tarball is $OUTFILE"
