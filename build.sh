@@ -1,4 +1,5 @@
 set -e
+cd ~
 if ! echo "$PATH" | grep sbin ; then
 PATH=$PATH:/usr/sbin:/sbin
 fi
@@ -9,6 +10,7 @@ sudo apt update
 sudo apt install -y linux-image-current-meson64 linux-headers-current-meson64
 MODVER="0.0.1"
 git clone --branch=rtl8189fs https://github.com/jwrdegoede/rtl8189ES_linux.git rtl8189fs-"$MODVER"
+cp -v /tmp/workspace/dkms.conf rtl8189fs-"$MODVER"/
 KVER="$(ls /lib/modules | head -n 1)"
 KSRC="$(find /usr/src/ -maxdepth 1 -type d -name 'linux-headers-*')"
 dkms build -m rtl8189fs/"$MODVER" --dkmstree "$PWD" --sourcetree "$PWD" --kernelsourcedir "$KSRC" -a arm64
