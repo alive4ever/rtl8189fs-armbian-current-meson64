@@ -1,4 +1,4 @@
-# rtl8189fs kernel module for armbian current meson64
+# rtl8189fs dkms kernel module for armbian current meson64
 
 ## Motivation
 
@@ -10,18 +10,13 @@ So, I build an out of tree kernel module using github-actions to make it easy fo
 
 ## How to use
 
-Get the resulting kernel module from the release page and extract the module somewhere in the `/lib/modules/$(uname -r)` directory, such as `/lib/modules/$(uname -r)/updates/`.
+Get the resulting dkms tarball from the release page and load it.
 
 ```sh
-mkdir /lib/modules/$(uname -r)/updates
-tar -C /lib/modules/$(uname -r)/updates -xf rtl8189fs-"$(uname -r)".tar.gz
-```
-
-To test the module
-
-```sh
-insmod /lib/modules/$(uname -r)/updates/8189fs.ko
-depmod -a
+MODVER='0.0.1'
+KVER="6.12.22-current-meson64-arm64"
+dkms ldtarball rtl8189fs-"$MODVER"-kernel"$KVER".dkms.tar.gz
+modprobe -f 8189fs
 ```
 
 To remove excessive kernel module log
@@ -33,7 +28,7 @@ echo 'options 8189fs rtw_power_mgnt=0 rtw_enusbss=0 rtw_drv_log_level=0' > /etc/
 More options can be found via modinfo.
 
 ```sh
-modinfo /lib/modules/$(uname -r)/updates/8189fs.ko
+modinfo 8189fs
 ```
 
 ## Acknowledgements
